@@ -1,0 +1,14 @@
+{
+  "_comment": "Static IP -> zone/host map for the lab. Every simulated 'host' in the topology binds its lab client sockets to a distinct 127.0.0.x loopback address (Linux allows binding to any address in 127.0.0.0/8 without extra network setup), so a single-machine run of this lab still has real, distinguishable source identities for the detection engine to reason about -- see docs/architecture.md for why this substitutes for separate Docker containers in constrained environments. The docker-compose.yml topology assigns real container IPs on a dedicated bridge network instead, and this file's zone semantics carry over unchanged.",
+  "hosts": {
+    "127.0.0.10": {"zone": "ot-engineering", "name": "engineering-workstation"},
+    "127.0.0.11": {"zone": "ot-engineering", "name": "hmi"},
+    "127.0.0.20": {"zone": "dmz", "name": "historian-jumphost"},
+    "127.0.0.30": {"zone": "it-enterprise", "name": "corp-laptop"},
+    "127.0.0.40": {"zone": "vendor-remote", "name": "vendor-access-conduit"}
+  },
+  "allowed_cross_zone": {
+    "scada": ["ot-engineering"],
+    "auxiliary": ["ot-engineering", "dmz"]
+  }
+}
