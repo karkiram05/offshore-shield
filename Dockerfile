@@ -5,7 +5,7 @@
 # process space rather than one container per host, and what moving to true
 # per-host containers (docker-compose with a dedicated bridge network) would
 # change.
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 
