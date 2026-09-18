@@ -1,0 +1,14 @@
+{
+  "_comment": "A deliberately looser baseline: it-enterprise is mistakenly left on the SCADA allow-list, the way a real OT network sometimes ends up after a rushed IT/OT integration project. Used by scenarios/scenario_discovery.py as the 'before hardening' configuration -- the point isn't that this is realistic forever, it's that it's a real, plausible starting misconfiguration whose fix is measurable.",
+  "hosts": {
+    "127.0.0.10": {"zone": "ot-engineering", "name": "engineering-workstation"},
+    "127.0.0.11": {"zone": "ot-engineering", "name": "hmi"},
+    "127.0.0.20": {"zone": "dmz", "name": "historian-jumphost"},
+    "127.0.0.30": {"zone": "it-enterprise", "name": "corp-laptop"},
+    "127.0.0.40": {"zone": "vendor-remote", "name": "vendor-access-conduit"}
+  },
+  "allowed_cross_zone": {
+    "scada": ["ot-engineering", "it-enterprise"],
+    "auxiliary": ["ot-engineering", "dmz", "it-enterprise"]
+  }
+}

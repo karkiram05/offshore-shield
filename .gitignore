@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+logs/*.log
+data/kelmarsh/km_scada_sample_2022.csv
+.venv/
+venv/
+*.egg-info/
+.DS_Store

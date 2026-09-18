@@ -1,0 +1,26 @@
+{
+  "_comment": "Each tap listens on a lab-external port and forwards to a backend simulator port. The listen ports are what an attacker/scanner in the lab actually touches; the backend ports are where the real simulator processes run. Zone boundaries here are logical labels, not enforced by anything but the detection engine's cross-zone rule -- see docs/architecture.md. protocol=modbus enables function-code parsing on the first bytes of each connection. The decoy entries below point at a backend port nothing listens on (127.0.0.1:1) purely so a port sweep across this range produces a real, loggable 'connection refused' event for each port it touches -- exactly what a real network tap/span port would see for a scan against closed OT ports, without needing a full second service behind each one.",
+  "taps": [
+    {
+      "listen_port": 6502,
+      "backend_host": "127.0.0.1",
+      "backend_port": 5020,
+      "zone": "scada",
+      "service": "turbine-plc",
+      "protocol": "modbus"
+    },
+    {
+      "listen_port": 6521,
+      "backend_host": "127.0.0.1",
+      "backend_port": 5021,
+      "zone": "auxiliary",
+      "service": "hvac-controller",
+      "protocol": "modbus"
+    },
+    {"listen_port": 6501, "backend_host": "127.0.0.1", "backend_port": 1, "zone": "scada", "service": "decoy-ftp"},
+    {"listen_port": 6503, "backend_host": "127.0.0.1", "backend_port": 1, "zone": "scada", "service": "decoy-ssh"},
+    {"listen_port": 6505, "backend_host": "127.0.0.1", "backend_port": 1, "zone": "scada", "service": "decoy-http"},
+    {"listen_port": 6510, "backend_host": "127.0.0.1", "backend_port": 1, "zone": "scada", "service": "decoy-iec104"},
+    {"listen_port": 6515, "backend_host": "127.0.0.1", "backend_port": 1, "zone": "scada", "service": "decoy-https"}
+  ]
+}
