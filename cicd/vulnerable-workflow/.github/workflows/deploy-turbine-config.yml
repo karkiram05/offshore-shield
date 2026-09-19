@@ -1,0 +1,28 @@
+# Fictional CI/CD pipeline: pushes signed turbine controller config/firmware
+# bundles to the wind farm's OTA distribution bucket. This is NOT a real
+# deployment pipeline -- it's a fixture for scenarios/scenario_cicd_identity.py,
+# built to exercise TrustGraph's real detection rules against a plausible
+# OT-adjacent CI/CD identity, not a toy example disconnected from the lab.
+name: Deploy Turbine Config
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: write
+  actions: write
+  id-token: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: some-random-org/firmware-sign-action@v1
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/turbine-ota-deploy-role
+          aws-region: eu-west-1
+      - run: ./publish-ota-bundle.sh

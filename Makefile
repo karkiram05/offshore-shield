@@ -1,4 +1,4 @@
-.PHONY: install fetch-dataset lab-up lab-down demo-discovery test lint clean
+.PHONY: install fetch-dataset lab-up lab-down demo-discovery demo-cicd test lint clean
 
 install:
 	pip install -r requirements.txt
@@ -26,6 +26,9 @@ lab-down:
 
 demo-discovery:
 	python3 scenarios/scenario_discovery.py --write-results
+
+demo-cicd:
+	python3 scenarios/scenario_cicd_identity.py --write-results
 
 test:
 	python3 -m pytest tests/ -v

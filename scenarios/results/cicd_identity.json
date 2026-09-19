@@ -1,0 +1,29 @@
+{
+  "generated_at": 1789809945.1423333,
+  "scenario": "A GitHub Actions pipeline publishes signed turbine controller firmware/config bundles via OIDC-assumed AWS access. Same pipeline, scanned before and after hardening the workflow permissions and trust policy.",
+  "before_hardening": {
+    "findings_total": 5,
+    "by_severity": {
+      "CRITICAL": 4,
+      "HIGH": 0,
+      "MEDIUM": 1,
+      "LOW": 0
+    },
+    "rule_ids": [
+      "missing-audience-restriction",
+      "overpermissioned-token",
+      "unpinned-action",
+      "wildcard-oidc-trust"
+    ]
+  },
+  "after_hardening": {
+    "findings_total": 0,
+    "by_severity": {
+      "CRITICAL": 0,
+      "HIGH": 0,
+      "MEDIUM": 0,
+      "LOW": 0
+    },
+    "rule_ids": []
+  }
+}

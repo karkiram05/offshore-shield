@@ -7,3 +7,4 @@ data/kelmarsh/km_scada_sample_2022.csv
 venv/
 *.egg-info/
 .DS_Store
+.trustgraph/

@@ -37,6 +37,11 @@ than STATUS.md backs up.
   lab and measures real detection latency and before/after counts --
   numbers in [`docs/results.md`](docs/results.md) come from rerunning
   this, not from hand-typing
+- A CI/CD identity scenario (`cicd/`, `scenarios/scenario_cicd_identity.py`)
+  that scans a fictional turbine-firmware deploy pipeline with
+  [TrustGraph](https://github.com/karkiram05/trustgraph) -- a real
+  dependency, not a reimplementation -- and measures real findings
+  before/after hardening the workflow permissions and OIDC trust policy
 
 ## Quickstart
 
@@ -50,6 +55,7 @@ make fetch-dataset      # full real Kelmarsh dataset (falls back to a
                          # see data/kelmarsh/README.md)
 make lab-up              # starts the turbine + HVAC simulators and the tap
 make demo-discovery      # runs a real scan and detection scenario end to end
+make demo-cicd           # scans the CI/CD identity fixtures with TrustGraph
 make test                # unit tests, no live processes required
 ```
 
@@ -68,6 +74,7 @@ python3 detection/engine.py    # tails logs/conn.log, prints alerts as they fire
 lab/            simulators (turbine, HVAC), the network tap, the scanner
 detection/      rules, ATT&CK-for-ICS mapping, risk scoring, the engine
 vuln/           the OT-aware vulnerability prioritizer
+cicd/           fictional CI/CD fixtures for the TrustGraph identity scenario
 scenarios/      scenario scripts + their real generated results
 compliance/     public control-framework mapping (not a certification claim)
 data/kelmarsh/  real public SCADA data + provenance

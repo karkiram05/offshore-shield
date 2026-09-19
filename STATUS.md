@@ -1,5 +1,7 @@
 # Status
 
+_Daily build log: day 2 of 12, last updated 2026-09-19._
+
 Honest tracking of what's actually implemented and tested vs. planned.
 Read this before docs/results.md or any scenario output -- it tells you
 which numbers are real measurements from working code and which parts are
@@ -41,8 +43,23 @@ still roadmap. Updated as work happens, not written once and left stale.
   space (see docs/architecture.md for why, and what per-container
   segmentation would add).
 
-Run `make test` for the unit tests, or `make lab-up && make demo-discovery`
-for the live end-to-end scenario.
+- **CI/CD identity scenario** (`scenarios/scenario_cicd_identity.py`) --
+  a small fictional GitHub Actions pipeline (`cicd/vulnerable-workflow/`,
+  `cicd/hardened-workflow/`) that publishes turbine firmware/config
+  bundles via OIDC-assumed AWS access, scanned with TrustGraph's real
+  detection engine (github.com/karkiram05/trustgraph, a genuine
+  dependency -- see requirements.txt, not a reimplementation). 5 real
+  findings before hardening (wildcard OIDC trust, missing audience
+  restriction, an overpermissioned token, two unpinned actions), 0
+  after. Also surfaced and fixed a real bug in TrustGraph itself: a
+  `resources.json` entry naming a role that doesn't match any
+  trust-policy file used to silently corrupt the graph instead of
+  erroring -- see trustgraph's `graph/builder.py` and its new
+  regression test. 4 passing tests here, plus 1 in trustgraph.
+
+Run `make test` for the unit tests, `make lab-up && make demo-discovery`
+for the live OT scan scenario, or `make demo-cicd` for the CI/CD identity
+scenario.
 
 ## Implemented, not yet wired into a full scenario
 
@@ -61,9 +78,6 @@ scope for this project included all of them:
   that changes a simulated setpoint, with before/after safety-impact
   framing -- deliberately not building anything that could look like real
   ICS sabotage tooling without that framing being airtight first)
-- **CI/CD identity scenario using TrustGraph** (a small fictional GitHub
-  Actions -> cloud-deploy workflow with an intentional over-broad
-  permission, scanned before/after hardening)
 - **True per-host network segmentation via docker-compose** (today: one
   container, loopback-IP-simulated hosts; planned: a real Docker bridge
   network with one container per lab host)

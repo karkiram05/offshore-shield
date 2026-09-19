@@ -1,0 +1,14 @@
+[
+  {
+    "role": "turbine-ota-deploy-role",
+    "resource": "turbine-ota-firmware-s3-bucket",
+    "description": "OTA distribution bucket for signed turbine controller config/firmware bundles",
+    "permission": "read-write"
+  },
+  {
+    "role": "turbine-ota-deploy-role",
+    "resource": "wind-farm-fleet-management-api",
+    "description": "Fleet management API that pushes accepted OTA bundles out to individual turbine controllers",
+    "permission": "network-access"
+  }
+]

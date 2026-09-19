@@ -1,0 +1,28 @@
+# Hardened counterpart to ../../vulnerable-workflow -- same pipeline, same
+# intent, corrected: pinned third-party actions (commit SHA, not a mutable
+# tag), workflow-level permissions dropped to nothing with the minimum
+# actually needed granted per-job, and the OIDC trust policy scoped to a
+# specific repo/branch with an audience restriction (see
+# trust-policies/production-deploy-role.json).
+name: Deploy Turbine Config
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: some-random-org/firmware-sign-action@8f2e9c1a4b6d7e0f1a2b3c4d5e6f7a8b9c0d1e2f
+      - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/turbine-ota-deploy-role
+          aws-region: eu-west-1
+      - run: ./publish-ota-bundle.sh

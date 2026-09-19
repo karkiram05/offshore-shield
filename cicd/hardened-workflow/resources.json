@@ -1,0 +1,8 @@
+[
+  {
+    "role": "turbine-ota-deploy-role",
+    "resource": "turbine-ota-firmware-s3-bucket",
+    "description": "OTA distribution bucket for signed turbine controller config/firmware bundles",
+    "permission": "read-write"
+  }
+]
