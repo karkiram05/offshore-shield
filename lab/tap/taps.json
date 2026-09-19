@@ -17,6 +17,22 @@
       "service": "hvac-controller",
       "protocol": "modbus"
     },
+    {
+      "listen_port": 6530,
+      "backend_host": "127.0.0.1",
+      "backend_port": 5040,
+      "zone": "dmz",
+      "service": "jumphost-mgmt",
+      "dst_host_ip": "127.0.0.20"
+    },
+    {
+      "listen_port": 6531,
+      "backend_host": "127.0.0.1",
+      "backend_port": 5040,
+      "zone": "ot-engineering",
+      "service": "engws-mgmt",
+      "dst_host_ip": "127.0.0.10"
+    },
     {"listen_port": 6501, "backend_host": "127.0.0.1", "backend_port": 1, "zone": "scada", "service": "decoy-ftp"},
     {"listen_port": 6503, "backend_host": "127.0.0.1", "backend_port": 1, "zone": "scada", "service": "decoy-ssh"},
     {"listen_port": 6505, "backend_host": "127.0.0.1", "backend_port": 1, "zone": "scada", "service": "decoy-http"},

@@ -43,6 +43,16 @@ TECHNIQUES = {
         "tactic": "Inhibit Response Function",
         "url": "https://attack.mitre.org/techniques/T0814/",
     },
+    "T0848": {
+        "name": "Rogue Master",
+        "tactic": "Initial Access",
+        "url": "https://attack.mitre.org/techniques/T0848/",
+    },
+    "T0802": {
+        "name": "Automated Collection",
+        "tactic": "Collection",
+        "url": "https://attack.mitre.org/techniques/T0802/",
+    },
 }
 
 

@@ -70,6 +70,18 @@ def parse_modbus_function_code(first_bytes: bytes) -> int | None:
     return first_bytes[7]
 
 
+def parse_modbus_write_single_register(first_bytes: bytes) -> tuple[int, int] | None:
+    """For function code 6 (Write Single Register): MBAP(7) + func(1) +
+    register address (2 bytes, big-endian) + register value (2 bytes,
+    big-endian). Returns (address, value) or None if the frame is too
+    short to contain them (e.g. truncated capture)."""
+    if len(first_bytes) < 12:
+        return None
+    address = int.from_bytes(first_bytes[8:10], "big")
+    value = int.from_bytes(first_bytes[10:12], "big")
+    return address, value
+
+
 @dataclass
 class TapTarget:
     listen_port: int
@@ -78,6 +90,15 @@ class TapTarget:
     zone: str
     service: str
     protocol: str = "tcp"
+    # Optional: the lab/network_zones.json host identity this tap actually
+    # represents (e.g. "127.0.0.20" for the DMZ jump host). Most taps don't
+    # set this -- they log dst_ip as this tap's own listen address, which
+    # is all rule_port_scan_discovery and friends need (distinct dst_port
+    # per asset is enough to tell them apart). A tap whose destination
+    # needs to be recognized as a specific *host* later becoming a *source*
+    # elsewhere (rule_lateral_movement_pivot) needs its real host identity
+    # logged instead -- see scenarios/scenario_lateral_movement.py.
+    dst_host_ip: str | None = None
 
 
 def load_targets(config_path: Path) -> list[TapTarget]:
@@ -146,10 +167,16 @@ async def handle_connection(reader, writer, target: TapTarget, logger: ConnLogge
 
     modbus_function_code = None
     modbus_function_name = None
+    modbus_write_register_addr = None
+    modbus_write_register_value = None
     if target.protocol == "modbus" and orig_first:
         modbus_function_code = parse_modbus_function_code(orig_first[0])
         if modbus_function_code is not None:
             modbus_function_name = MODBUS_FUNCTION_NAMES.get(modbus_function_code, f"unknown ({modbus_function_code})")
+        if modbus_function_code == 6:
+            parsed = parse_modbus_write_single_register(orig_first[0])
+            if parsed is not None:
+                modbus_write_register_addr, modbus_write_register_value = parsed
 
     duration = time.time() - start
     await logger.write({
@@ -160,7 +187,10 @@ async def handle_connection(reader, writer, target: TapTarget, logger: ConnLogge
         # dst_ip/dst_port are what the scanning/connecting party actually
         # touched (this tap's own listen address) -- not the internal
         # backend it proxies to, which is a lab implementation detail.
-        "dst_ip": "127.0.0.1",
+        # dst_host_ip overrides this when the tap represents a specific,
+        # named lab host rather than an anonymous service port (see
+        # TapTarget.dst_host_ip above).
+        "dst_ip": target.dst_host_ip or "127.0.0.1",
         "dst_port": target.listen_port,
         "backend_port": target.backend_port,
         "zone": target.zone,
@@ -172,6 +202,8 @@ async def handle_connection(reader, writer, target: TapTarget, logger: ConnLogge
         "connected": connected,
         "modbus_function_code": modbus_function_code,
         "modbus_function_name": modbus_function_name,
+        "modbus_write_register_addr": modbus_write_register_addr,
+        "modbus_write_register_value": modbus_write_register_value,
     })
 
 

@@ -18,6 +18,22 @@ integer registers):
     40004  power_max_kw      (x10 fixed point)
     40005  row_index         (which source row is currently loaded)
     40006  status            (0=normal, 1=fault-simulated)
+    40007  curtailment_setpoint_pct  (0-100, writable -- see below)
+
+Register 40007 (index 6) is the one holding register in this map that's
+meant to be *written*, not just read. It models a real wind-turbine
+control point: a SCADA/engineering client can command the turbine to
+curtail (reduce) its power output to a percentage of capacity, e.g. for
+grid-operator curtailment orders or high-wind protection. Real turbine
+controllers ramp this kind of setpoint gradually -- an abrupt 0%->100%
+jump is mechanically abnormal (sudden torque/blade-pitch swings stress
+the drivetrain) and is exactly the kind of write a process-manipulation
+attack would send. TelemetryFeeder deliberately does NOT touch index 6
+on its periodic tick (it only overwrites indices 0-5), so a written
+setpoint value persists until another client writes it again -- see
+scenarios/scenario_process_manipulation.py, which writes both an abrupt
+and a gradual/ramped setpoint change and shows the detection engine
+telling them apart.
 """
 import argparse
 import csv

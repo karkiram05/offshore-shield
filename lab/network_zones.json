@@ -9,6 +9,8 @@
   },
   "allowed_cross_zone": {
     "scada": ["ot-engineering"],
-    "auxiliary": ["ot-engineering", "dmz"]
+    "auxiliary": ["ot-engineering", "dmz"],
+    "dmz": ["it-enterprise", "vendor-remote"],
+    "ot-engineering": ["dmz"]
   }
 }

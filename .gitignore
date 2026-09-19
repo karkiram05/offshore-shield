@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 logs/*.log
+logs/*.out
 data/kelmarsh/km_scada_sample_2022.csv
 .venv/
 venv/

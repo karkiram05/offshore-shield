@@ -1,5 +1,5 @@
 {
-  "generated_at": 1789752484.1281474,
+  "generated_at": 1789811796.5267851,
   "records_observed": 7,
   "before_hardening": {
     "zones_config": "/home/claude/offshore-shield/lab/network_zones_baseline_loose.json",
@@ -10,6 +10,6 @@
     "zones_config": "/home/claude/offshore-shield/lab/network_zones.json",
     "alerts_raised": 8,
     "cross_zone_violations_detected": 7,
-    "detection_latency_s": 0.8453
+    "detection_latency_s": 0.837
   }
 }
