@@ -51,5 +51,13 @@ jobs:
       - name: pip-audit (known-vulnerable dependency scan)
         # Fails on any advisory with a fix available. A finding with no fix
         # yet gets an explicit `--ignore-vuln <id>` with a re-check date,
-        # not a blanket `|| true`.
-        run: pip-audit -r requirements.txt
+        # not a blanket `|| true`. pip-audit can't look up advisories for
+        # trustgraph (a first-party git dependency, not on PyPI) -- that
+        # always makes it report the dependency as unauditable and exit
+        # non-zero regardless of whether either project has an actual
+        # vulnerability, so this filters requirements.txt down to the
+        # PyPI-published subset before auditing (trustgraph runs its own
+        # pip-audit in its own repo's CI against its own dependency tree).
+        run: |
+          grep -v '^trustgraph' requirements.txt | grep -v '@ git+' > /tmp/pypi-requirements.txt
+          pip-audit -r /tmp/pypi-requirements.txt

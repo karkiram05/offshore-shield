@@ -1,5 +1,5 @@
 {
-  "generated_at": 1789809945.1423333,
+  "generated_at": 1789812520.5044293,
   "scenario": "A GitHub Actions pipeline publishes signed turbine controller firmware/config bundles via OIDC-assumed AWS access. Same pipeline, scanned before and after hardening the workflow permissions and trust policy.",
   "before_hardening": {
     "findings_total": 5,

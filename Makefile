@@ -52,7 +52,13 @@ test:
 lint:
 	pip install --quiet bandit pip-audit
 	bandit -r detection vuln lab scenarios dashboard -q
-	pip-audit -r requirements.txt
+	# pip-audit can't look up advisories for trustgraph (a first-party git
+	# dependency, not on PyPI) -- audit the PyPI-published subset of
+	# requirements.txt instead of a hand-maintained duplicate list, so
+	# this can't silently drift when requirements.txt changes. See
+	# .github/workflows/ci.yml's pip-audit step for the same filter.
+	grep -v '^trustgraph' requirements.txt | grep -v '@ git+' > /tmp/offshoreshield-pypi-requirements.txt
+	pip-audit -r /tmp/offshoreshield-pypi-requirements.txt
 
 clean:
 	rm -f logs/*.log logs/*.out

@@ -1,5 +1,5 @@
 {
-  "generated_at": 1789811789.1906347,
+  "generated_at": 1789812485.4078047,
   "records_observed": 7,
   "unexpected_modbus_write_alerts": 7,
   "unsafe_setpoint_write_alerts": 1,
@@ -8,5 +8,5 @@
   ],
   "abrupt_write_flagged_unsafe": true,
   "ramped_writes_not_flagged_unsafe": true,
-  "eval_latency_s": 0.0048
+  "eval_latency_s": 0.0053
 }
