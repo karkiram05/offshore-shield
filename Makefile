@@ -51,7 +51,7 @@ test:
 
 lint:
 	pip install --quiet bandit pip-audit
-	bandit -r detection vuln lab scenarios -q
+	bandit -r detection vuln lab scenarios dashboard -q
 	pip-audit -r requirements.txt
 
 clean:

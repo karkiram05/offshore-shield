@@ -46,7 +46,7 @@ jobs:
         run: pip install bandit pip-audit
 
       - name: Bandit (static analysis for common security issues)
-        run: bandit -r detection vuln lab scenarios -q
+        run: bandit -r detection vuln lab scenarios dashboard -q
 
       - name: pip-audit (known-vulnerable dependency scan)
         # Fails on any advisory with a fix available. A finding with no fix
