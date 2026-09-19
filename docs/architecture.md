@@ -39,6 +39,41 @@ environment, swapping it in as the log source is a matter of pointing
 `detection/engine.py` at whatever produces equivalent JSON records --
 the detection rules don't care where conn.log came from.
 
+## Real OS-level segmentation, without Docker (`lab/segmentation/`)
+
+The plan above was to demonstrate zone enforcement -- not just detection
+-- using per-host Docker containers on a dedicated bridge network. That
+turned out not to be buildable in this project's actual build
+environment: `docker pull` against both Docker Hub (`registry-1.docker.io`)
+and `ghcr.io` returns `403 Forbidden` here, even though the Docker daemon
+itself starts fine and has `CAP_NET_ADMIN`. Rather than drop the
+enforcement demonstration entirely, `lab/segmentation/netns_lab.py` builds
+it a different, real way: Linux network namespaces (`ip netns`), veth
+links, and an nftables ruleset -- all kernel-level primitives, no
+container runtime or registry required.
+
+Concretely: one namespace per zone in `network_zones.json`, each
+connected by its own point-to-point veth link to a router namespace with
+IP forwarding enabled. The router's nftables `forward` chain is
+generated directly from `allowed_cross_zone` (default-drop, one explicit
+accept rule per allowed src-zone/dst-zone pair) -- not hand-duplicated,
+so it cannot silently drift from the policy the detection engine reads.
+`scenarios/scenario_network_segmentation.py` then makes a real TCP
+connection attempt for every zone pair the policy has an opinion on and
+checks whether the *kernel* actually let it through or dropped it -- this
+is the one part of this repo that demonstrates prevention rather than
+after-the-fact detection.
+
+This is arguably a more honest demonstration of "real segmentation" than
+Docker containers would have been: veth + netns + nftables is exactly the
+mechanism a Docker bridge network uses under the hood (Docker itself is a
+container-lifecycle and image-distribution tool built on these same
+primitives), so this substitutes the orchestration layer that was blocked
+for the actual enforcement mechanism it wraps, not for something weaker.
+The container-per-host topology (separate root filesystems, separate
+process trees) remains future work if that isolation boundary specifically
+matters for a given use case -- see STATUS.md.
+
 ## Data flow
 
 ```

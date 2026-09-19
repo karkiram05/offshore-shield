@@ -1,4 +1,4 @@
-.PHONY: install fetch-dataset lab-up lab-down demo-discovery demo-cicd demo-lateral-movement demo-process-manipulation dashboard test lint clean
+.PHONY: install fetch-dataset lab-up lab-down demo-discovery demo-cicd demo-lateral-movement demo-process-manipulation demo-network-segmentation dashboard test lint clean
 
 install:
 	pip install -r requirements.txt
@@ -37,6 +37,10 @@ demo-lateral-movement:
 
 demo-process-manipulation:
 	python3 scenarios/scenario_process_manipulation.py --write-results
+
+demo-network-segmentation:
+	@echo "Requires root / CAP_NET_ADMIN (creates real Linux network namespaces) -- run with sudo if needed."
+	python3 scenarios/scenario_network_segmentation.py --write-results
 
 dashboard:
 	python3 dashboard/generate_dashboard.py

@@ -1,0 +1,154 @@
+{
+  "generated_at": 1789812284.2042074,
+  "cases_tested": 20,
+  "cases_matching_policy": 20,
+  "cases_mismatching_policy": 0,
+  "allowed_pairs_tested": 6,
+  "allowed_pairs_actually_connected": 6,
+  "disallowed_pairs_tested": 14,
+  "disallowed_pairs_actually_blocked": 14,
+  "enforcement_fully_matches_policy": true,
+  "eval_latency_s": 28.513,
+  "cases": [
+    {
+      "src_zone": "ot-engineering",
+      "dst_zone": "scada",
+      "expected_allowed": true,
+      "actual_allowed": true,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "auxiliary",
+      "dst_zone": "scada",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "dmz",
+      "dst_zone": "scada",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "it-enterprise",
+      "dst_zone": "scada",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "vendor-remote",
+      "dst_zone": "scada",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "scada",
+      "dst_zone": "auxiliary",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "ot-engineering",
+      "dst_zone": "auxiliary",
+      "expected_allowed": true,
+      "actual_allowed": true,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "dmz",
+      "dst_zone": "auxiliary",
+      "expected_allowed": true,
+      "actual_allowed": true,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "it-enterprise",
+      "dst_zone": "auxiliary",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "vendor-remote",
+      "dst_zone": "auxiliary",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "scada",
+      "dst_zone": "dmz",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "ot-engineering",
+      "dst_zone": "dmz",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "auxiliary",
+      "dst_zone": "dmz",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "it-enterprise",
+      "dst_zone": "dmz",
+      "expected_allowed": true,
+      "actual_allowed": true,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "vendor-remote",
+      "dst_zone": "dmz",
+      "expected_allowed": true,
+      "actual_allowed": true,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "scada",
+      "dst_zone": "ot-engineering",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "auxiliary",
+      "dst_zone": "ot-engineering",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "dmz",
+      "dst_zone": "ot-engineering",
+      "expected_allowed": true,
+      "actual_allowed": true,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "it-enterprise",
+      "dst_zone": "ot-engineering",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    },
+    {
+      "src_zone": "vendor-remote",
+      "dst_zone": "ot-engineering",
+      "expected_allowed": false,
+      "actual_allowed": false,
+      "matches_policy": true
+    }
+  ]
+}
