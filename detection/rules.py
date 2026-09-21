@@ -27,9 +27,9 @@ def classify_zone(ip: str, zones: dict) -> str:
 
 
 def rule_port_scan_discovery(records: list[dict], zones: dict, state: dict) -> list[Finding]:
-    """Many distinct (dst_ip, dst_port) pairs from one source in a short
-    window -> OT network/service discovery. Maps to ATT&CK ICS T0846
-    (Remote System Discovery) and T0840 (Network Connection Enumeration)."""
+    """Many distinct dst_ip/dst_port pairs from one source in a short window.
+    ATT&CK ICS T0846 (Remote System Discovery) / T0840 (Network Connection
+    Enumeration)."""
     findings = []
     history = state.setdefault("touches", {})  # src_ip -> list[(ts, dst_ip, dst_port)]
 
@@ -37,10 +37,8 @@ def rule_port_scan_discovery(records: list[dict], zones: dict, state: dict) -> l
         src = rec["src_ip"]
         touches = history.setdefault(src, [])
         touches.append((rec["ts"], rec["dst_ip"], rec["dst_port"]))
-        # Window is relative to this record's own timestamp, not wall-clock
-        # time, so this works identically for live traffic and for batch
-        # replay of historical conn.log data (the scenario harness does
-        # the latter).
+        # window is relative to the record's own ts, not wall clock, so batch
+        # replay of an old conn.log behaves the same as watching it live
         cutoff = rec["ts"] - PORT_SCAN_WINDOW_S
         history[src] = [t for t in touches if t[0] >= cutoff]
 
@@ -105,14 +103,10 @@ OT_ZONES = {"scada", "auxiliary"}  # dst zones that count as OT for the rogue-ma
 
 
 def rule_rogue_master(records: list[dict], zones: dict, state: dict) -> list[Finding]:
-    """A source that isn't in this lab's provisioned-host inventory
-    (zones.json's `hosts` map) reaching an OT-zone service directly. In a
-    real deployment this is asset-inventory drift: a device nobody
-    provisioned or documented is talking to control-system infrastructure.
-    Maps to ATT&CK ICS T0848 (Rogue Master) -- an unrecognized device
-    sending control-protocol traffic to a PLC/RTU is exactly the pattern
-    a fraudulent master exhibits before it's caught, whether or not intent
-    is ever established."""
+    """A source not in zones.json's provisioned-host inventory reaching an
+    OT-zone service directly -- asset-inventory drift in real terms, a
+    device nobody documented talking to control infrastructure. ATT&CK ICS
+    T0848 (Rogue Master)."""
     findings = []
     for rec in records:
         dst_zone = rec.get("zone")
@@ -137,13 +131,10 @@ AUTOMATED_COLLECTION_THRESHOLD = 6  # requests to the *same* (dst_ip, dst_port) 
 
 
 def rule_automated_collection(records: list[dict], zones: dict, state: dict) -> list[Finding]:
-    """Many requests from one source to the *same* destination service in a
-    short window -- unlike rule_port_scan_discovery (many distinct targets,
-    ATT&CK Discovery), this is repeated querying of one point, well above
-    what this lab's telemetry feeder's own polling cadence would produce
-    (see lab/plc_sim's --interval, default 2s). Maps to ATT&CK ICS T0802
-    (Automated Collection): a script or tool polling a control point far
-    faster than a human operator or the legitimate feeder would."""
+    """Repeated requests to the *same* destination -- not many targets like
+    port_scan_discovery, one target polled faster than the lab's own
+    telemetry feeder does (lab/plc_sim's --interval, default 2s). ATT&CK ICS
+    T0802 (Automated Collection)."""
     findings = []
     history = state.setdefault("repeat_touches", {})  # (src_ip,dst_ip,dst_port) -> list[ts]
 
@@ -171,16 +162,12 @@ LATERAL_MOVEMENT_WINDOW_S = 30.0
 
 
 def rule_lateral_movement_pivot(records: list[dict], zones: dict, state: dict) -> list[Finding]:
-    """Catches a sequence rule_cross_zone_violation can't: a host that was
-    just reached as a *destination*, then shortly afterward itself
-    initiates a connection onward into a *different* zone. Each individual
-    hop can be perfectly allowed by the zone policy (a jump host is
-    *supposed* to be reachable from IT and *supposed* to reach OT-engineering
-    -- that's what makes it a jump host) -- it's the pivot pattern across
-    two allowed hops, not either hop alone, that's the lateral-movement
-    signal. Maps to ATT&CK ICS T0859 (Valid Accounts): using what looks
-    like a legitimate session on an already-permitted path is exactly how
-    real lateral movement evades allow-list-only network security."""
+    """Catches what cross_zone_violation can't: a host reached as a
+    destination, then shortly after initiating a connection onward into a
+    different zone. A jump host is supposed to be reachable from IT and
+    supposed to reach OT-engineering -- neither hop alone is a violation,
+    it's the two-hop pattern that matters. ATT&CK ICS T0859 (Valid
+    Accounts)."""
     findings = []
     recently_dst = state.setdefault("recently_dst", {})  # ip -> ts last seen as a destination
 
@@ -216,24 +203,14 @@ SETPOINT_ABRUPT_DELTA_PCT = 25  # a single write changing a 0-100 setpoint by th
 
 
 def rule_unsafe_setpoint_write(records: list[dict], zones: dict, state: dict) -> list[Finding]:
-    """A Modbus Write Single Register (function code 6) that changes a
-    writable control setpoint (e.g. the turbine simulator's curtailment
-    setpoint at holding register 40007) abruptly -- a large jump in one
-    write, rather than the small ramped steps a real turbine controller's
-    engineering interface would send. This is deliberately narrower and
-    more specific than rule_unexpected_modbus_write, which already flags
-    *any* write to a lab asset modeled as read-only: that rule catches
-    "a write happened at all," this one catches "the value written is
-    itself mechanically unsafe," and both are meant to co-fire on the
-    same abrupt write -- overlapping detections are intentional
-    defense-in-depth, not redundancy to be suppressed. Maps to ATT&CK ICS
-    T0836 (Modify Parameter), the same technique as
-    rule_unexpected_modbus_write, since both observe a parameter
-    modification -- this rule adds the safety-impact framing STATUS.md
-    calls for (an abrupt 0%->100% curtailment command risks real
-    drivetrain/blade-pitch mechanical stress on an actual turbine) rather
-    than treating every write as equally severe regardless of the value
-    written."""
+    """A Modbus Write Single Register that changes a control setpoint (e.g.
+    the turbine's curtailment setpoint at register 40007) abruptly instead
+    of the small ramped steps a real engineering interface sends. Narrower
+    than unexpected_modbus_write -- that one catches any write at all, this
+    one catches a write whose *value* is mechanically unsafe, and both are
+    meant to fire together on the same write. ATT&CK ICS T0836 (Modify
+    Parameter); an abrupt 0->100 curtailment jump risks real drivetrain/
+    blade-pitch stress on an actual turbine."""
     findings = []
     last_value = state.setdefault("setpoint_last_value", {})  # (dst_ip, dst_port, register_addr) -> last written value
 

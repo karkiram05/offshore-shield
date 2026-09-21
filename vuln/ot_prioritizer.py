@@ -1,17 +1,14 @@
 """OT-aware vulnerability prioritization.
 
-A raw CVSS score answers "how bad is this vulnerability in the abstract."
-It doesn't answer the question an OT security engineer actually has to
-answer: "given where this asset sits, what's actually reachable, and what
-happens to the turbine/substation if I patch it right now" -- CVSS says
-nothing about exposure, compensating controls, or the cost of an outage.
-That gap is explicit in how OT security roles at critical-infrastructure
-operators describe the job (see docs/orsted-case-study.md for the public
-job-posting language this module is built to answer).
+CVSS answers "how bad is this in the abstract." It says nothing about
+whether the asset is actually reachable, what compensating controls exist,
+or what happens to the turbine if you patch it mid-shift -- which is the
+question an OT engineer actually has to answer (see
+docs/orsted-case-study.md for the job-posting language this is built
+around).
 
-This is a real, runnable rules engine over structured inputs -- not a
-lookup table of hand-written outputs per CVE. Feed it a different asset and
-you get a genuinely different, computed recommendation.
+A rules engine over structured inputs, not a lookup table of pre-written
+answers per CVE -- change the asset and the score actually changes.
 """
 from dataclasses import dataclass, field
 from enum import Enum
