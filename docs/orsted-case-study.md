@@ -21,15 +21,24 @@ security analysis (TrustGraph), and now OT-specific network security and
 operationally-aware vulnerability triage (OffshoreShield) -- three
 distinct security-engineering disciplines, not one narrow tool.
 
-## A specific, currently open posting
+## A specific posting, checked twice
 
-As of 19 September 2026, Ørsted has an open req for
+Ørsted's req for
 [**OT Compliance Manager (m/f/d)**](https://orsted.com/en/careers/vacancies-list/2026/04/32212-ot-compliance-manager-m-f-d)
-(Gentofte, Skærbæk, Warsaw, Hamburg -- application deadline 20 September
-2026 per the listing, so treat the link as likely expired if you're
-reading this later; individual postings rotate and expire, which is why
-the rest of this project avoids citing specific listing URLs as durably
-live). Quoting its stated requirements directly:
+(Gentofte, Skærbæk, Warsaw, Hamburg) is the posting this case study maps
+against. Its stated application deadline is 20 August 2026 -- re-checked
+live on 21 September 2026, over a month past that date, and the listing
+is still up and still showing the "Apply" flow rather than a closed/filled
+notice; the page itself explains why ("we'll be conducting interviews on
+a continuous basis and reserve the right to take down the advert when
+we've found the right candidate"). Re-verifying this after the fact, not
+just at initial write-up, is the point: a case study that cites a live
+listing has to be willing to find out it's gone stale, not just assert
+freshness once and move on. If you're reading this well after 21
+September 2026, treat the link as likely expired regardless -- individual
+postings rotate, which is why the rest of this project avoids citing
+specific listing URLs as durably live. Quoting its stated requirements
+directly:
 
 > "very good knowledge and understanding about industrial standards like
 > ISO27001, -2, -5 and IEC62443"

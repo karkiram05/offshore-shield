@@ -1,5 +1,9 @@
 # OffshoreShield
 
+[![CI](https://github.com/karkiram05/offshore-shield/actions/workflows/ci.yml/badge.svg)](https://github.com/karkiram05/offshore-shield/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](requirements.txt)
+
 An isolated OT (operational technology) security research lab: a
 simulated renewable-energy control network, a real network tap, a
 detection engine mapped to MITRE ATT&CK for ICS, and an OT-aware
