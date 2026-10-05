@@ -229,12 +229,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default="lab/tap/taps.json")
     parser.add_argument("--log", default="logs/conn.log")
-    # 0.0.0.0 is correct here, not a hardening gap: this lab's whole point
-    # is to be reachable from every simulated "host" (distinct 127.0.0.x
-    # loopback addresses, or separate containers on the docker-compose
-    # network) so their traffic can be tapped and detected. Binding to a
-    # single interface would defeat the lab.
-    parser.add_argument("--host", default="0.0.0.0")  # nosec B104
+    # Loopback by default. Every simulated lab "host" binds its *source*
+    # address to a distinct 127.0.0.x but connects to 127.0.0.1, so a
+    # loopback listener sees all lab traffic while keeping the
+    # unauthenticated Modbus endpoints off the LAN. The container image sets
+    # LAB_BIND_HOST=0.0.0.0 so Docker can publish the ports, and
+    # docker-compose.yml publishes them on the host's 127.0.0.1 only.
+    parser.add_argument("--host", default="127.0.0.1")
     args = parser.parse_args()
     asyncio.run(main_async(args))
 

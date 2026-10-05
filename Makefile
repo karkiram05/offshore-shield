@@ -1,7 +1,11 @@
 .PHONY: install fetch-dataset lab-up lab-down demo-discovery demo-cicd demo-lateral-movement demo-process-manipulation demo-network-segmentation dashboard test lint clean
 
+# Interface the tap listens on. Loopback unless overridden (the Docker image
+# sets 0.0.0.0 inside the container; compose publishes on host loopback).
+LAB_BIND_HOST ?= 127.0.0.1
+
 install:
-	pip install -r requirements.txt
+	pip install -r requirements-dev.txt
 
 fetch-dataset:
 	curl -L -o data/kelmarsh/km_scada_sample_2022.csv \
@@ -14,7 +18,7 @@ lab-up:
 	python3 lab/plc_sim/hvac_modbus_server.py --port 5021 --interval 2 > logs/hvac.out 2>&1 &
 	python3 lab/services/mgmt_banner_service.py --port 5040 > logs/mgmt.out 2>&1 &
 	sleep 1
-	python3 lab/tap/network_tap.py --config lab/tap/taps.json --log logs/conn.log > logs/tap.out 2>&1 &
+	python3 lab/tap/network_tap.py --config lab/tap/taps.json --log logs/conn.log --host $(LAB_BIND_HOST) > logs/tap.out 2>&1 &
 	sleep 1
 	@echo "Lab is up. Turbine PLC on :6502, HVAC on :6521, jump-host mgmt on :6530, eng-workstation mgmt on :6531 (all via the tap)."
 	@echo "Run 'make demo-discovery', 'make demo-lateral-movement', 'make demo-cicd', or 'make demo-process-manipulation' in another shell, or 'python3 detection/engine.py' to watch alerts live."
@@ -51,14 +55,13 @@ test:
 
 lint:
 	pip install --quiet bandit pip-audit
-	bandit -r detection vuln lab scenarios dashboard -q
+	bandit -r detection vuln lab scenarios dashboard scripts -q
 	# pip-audit can't look up advisories for trustgraph (a first-party git
 	# dependency, not on PyPI) -- audit the PyPI-published subset of
 	# requirements.txt instead of a hand-maintained duplicate list, so
 	# this can't silently drift when requirements.txt changes. See
 	# .github/workflows/ci.yml's pip-audit step for the same filter.
-	grep -v '^trustgraph' requirements.txt | grep -v '@ git+' > /tmp/offshoreshield-pypi-requirements.txt
-	pip-audit -r /tmp/offshoreshield-pypi-requirements.txt
+	tmp=$$(mktemp) && { grep -v "^trustgraph" requirements.txt | grep -v "@ git+"; grep -v "^-r " requirements-dev.txt; } > $$tmp && pip-audit -r $$tmp; status=$$?; rm -f $$tmp; exit $$status
 
 clean:
 	rm -f logs/*.log logs/*.out

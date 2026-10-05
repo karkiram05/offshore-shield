@@ -7,8 +7,13 @@ the public Kelmarsh Wind Farm dataset:
 - Source: Kelmarsh Power Data 2022 (IFAC RR Tutorial), Zenodo record
   [15799719](https://zenodo.org/records/15799719)
 - License: CC-BY-4.0
-- Full file: `km_scada_sample_2022.csv`, 4.8 MB, ~1,400 rows spanning
-  several days of real turbine output at Kelmarsh Wind Farm, UK
+- Full file: `km_scada_sample_2022.csv`, about 4.8 MB as listed on the
+  Zenodo record. (An earlier version of this README also said "~1,400
+  rows"; that can't be right for a 4.8 MB file with these five columns,
+  and zenodo.org isn't reachable from the build environment to check, so
+  no row count is claimed here. After `make fetch-dataset`,
+  `python scripts/build_data.py` reports the real count in
+  `data/clean/kelmarsh_quality_report.json`.)
 
 ## Why only 20 rows are committed here
 

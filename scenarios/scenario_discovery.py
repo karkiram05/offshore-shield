@@ -22,6 +22,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
 from detection.engine import DetectionEngine, load_zones, read_jsonl  # noqa: E402
+from scenarios.artifacts import repo_relative, save_alerts, save_capture  # noqa: E402
 
 
 def run_scan(conn_log: Path) -> list[dict]:
@@ -82,12 +83,12 @@ def main():
         "generated_at": time.time(),
         "records_observed": len(records),
         "before_hardening": {
-            "zones_config": args.baseline_zones,
+            "zones_config": repo_relative(args.baseline_zones),
             "alerts_raised": len(before_alerts),
             "cross_zone_violations_detected": sum(1 for a in before_alerts if a.rule == "cross_zone_violation"),
         },
         "after_hardening": {
-            "zones_config": args.hardened_zones,
+            "zones_config": repo_relative(args.hardened_zones),
             "alerts_raised": len(after_alerts),
             "cross_zone_violations_detected": sum(1 for a in after_alerts if a.rule == "cross_zone_violation"),
             "detection_latency_s": round(detection_latency_s, 4) if detection_latency_s is not None else None,
@@ -100,7 +101,11 @@ def main():
         out_path = REPO_ROOT / "scenarios" / "results" / "discovery.json"
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(result, indent=2) + "\n")
-        print(f"[scenario] wrote {out_path}")
+        print(f"[scenario] wrote {repo_relative(out_path)}")
+        print(f"[scenario] wrote {repo_relative(save_capture('discovery', records))}")
+        alerts_path = save_alerts("discovery", {"before_hardening": before_alerts,
+                                                "after_hardening": after_alerts})
+        print(f"[scenario] wrote {repo_relative(alerts_path)}")
 
 
 if __name__ == "__main__":

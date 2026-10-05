@@ -1,8 +1,8 @@
 {
-  "generated_at": 1789812483.6039007,
+  "generated_at": 1791198687.4881473,
   "records_observed": 2,
   "cross_zone_violation_alerts": 0,
   "lateral_movement_pivot_alerts": 1,
   "pivot_detected": true,
-  "eval_latency_s": 0.0275
+  "eval_latency_s": 0.0307
 }

@@ -1,0 +1,184 @@
+{
+  "after_hardening": [
+    {
+      "evidence": {
+        "distinct_targets": 5,
+        "window_s": 15.0
+      },
+      "prior_alerts_from_source": 0,
+      "rule": "port_scan_discovery",
+      "score": 75.0,
+      "severity": "HIGH",
+      "src_ip": "127.0.0.30",
+      "summary": "127.0.0.30 touched 5 distinct service(s) in 15s",
+      "technique": {
+        "id": "T0846",
+        "name": "Remote System Discovery",
+        "tactic": "Discovery",
+        "url": "https://attack.mitre.org/techniques/T0846/"
+      },
+      "ts": 1791198684.0142043
+    },
+    {
+      "evidence": {
+        "dst_zone": "scada",
+        "service": "decoy-ftp",
+        "src_zone": "it-enterprise"
+      },
+      "prior_alerts_from_source": 1,
+      "rule": "cross_zone_violation",
+      "score": 94.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.30",
+      "summary": "127.0.0.30 (it-enterprise) reached scada zone asset decoy-ftp -- not on the allow-list",
+      "technique": {
+        "id": "T0886",
+        "name": "Remote Services",
+        "tactic": "Lateral Movement",
+        "url": "https://attack.mitre.org/techniques/T0886/"
+      },
+      "ts": 1791198684.0142314
+    },
+    {
+      "evidence": {
+        "dst_zone": "scada",
+        "service": "turbine-plc",
+        "src_zone": "it-enterprise"
+      },
+      "prior_alerts_from_source": 2,
+      "rule": "cross_zone_violation",
+      "score": 98.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.30",
+      "summary": "127.0.0.30 (it-enterprise) reached scada zone asset turbine-plc -- not on the allow-list",
+      "technique": {
+        "id": "T0886",
+        "name": "Remote Services",
+        "tactic": "Lateral Movement",
+        "url": "https://attack.mitre.org/techniques/T0886/"
+      },
+      "ts": 1791198684.0142362
+    },
+    {
+      "evidence": {
+        "dst_zone": "scada",
+        "service": "decoy-ssh",
+        "src_zone": "it-enterprise"
+      },
+      "prior_alerts_from_source": 3,
+      "rule": "cross_zone_violation",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.30",
+      "summary": "127.0.0.30 (it-enterprise) reached scada zone asset decoy-ssh -- not on the allow-list",
+      "technique": {
+        "id": "T0886",
+        "name": "Remote Services",
+        "tactic": "Lateral Movement",
+        "url": "https://attack.mitre.org/techniques/T0886/"
+      },
+      "ts": 1791198684.0142388
+    },
+    {
+      "evidence": {
+        "dst_zone": "scada",
+        "service": "decoy-http",
+        "src_zone": "it-enterprise"
+      },
+      "prior_alerts_from_source": 4,
+      "rule": "cross_zone_violation",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.30",
+      "summary": "127.0.0.30 (it-enterprise) reached scada zone asset decoy-http -- not on the allow-list",
+      "technique": {
+        "id": "T0886",
+        "name": "Remote Services",
+        "tactic": "Lateral Movement",
+        "url": "https://attack.mitre.org/techniques/T0886/"
+      },
+      "ts": 1791198684.0142412
+    },
+    {
+      "evidence": {
+        "dst_zone": "scada",
+        "service": "decoy-iec104",
+        "src_zone": "it-enterprise"
+      },
+      "prior_alerts_from_source": 5,
+      "rule": "cross_zone_violation",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.30",
+      "summary": "127.0.0.30 (it-enterprise) reached scada zone asset decoy-iec104 -- not on the allow-list",
+      "technique": {
+        "id": "T0886",
+        "name": "Remote Services",
+        "tactic": "Lateral Movement",
+        "url": "https://attack.mitre.org/techniques/T0886/"
+      },
+      "ts": 1791198684.0142438
+    },
+    {
+      "evidence": {
+        "dst_zone": "scada",
+        "service": "decoy-https",
+        "src_zone": "it-enterprise"
+      },
+      "prior_alerts_from_source": 6,
+      "rule": "cross_zone_violation",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.30",
+      "summary": "127.0.0.30 (it-enterprise) reached scada zone asset decoy-https -- not on the allow-list",
+      "technique": {
+        "id": "T0886",
+        "name": "Remote Services",
+        "tactic": "Lateral Movement",
+        "url": "https://attack.mitre.org/techniques/T0886/"
+      },
+      "ts": 1791198684.014248
+    },
+    {
+      "evidence": {
+        "dst_zone": "auxiliary",
+        "service": "hvac-controller",
+        "src_zone": "it-enterprise"
+      },
+      "prior_alerts_from_source": 7,
+      "rule": "cross_zone_violation",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.30",
+      "summary": "127.0.0.30 (it-enterprise) reached auxiliary zone asset hvac-controller -- not on the allow-list",
+      "technique": {
+        "id": "T0886",
+        "name": "Remote Services",
+        "tactic": "Lateral Movement",
+        "url": "https://attack.mitre.org/techniques/T0886/"
+      },
+      "ts": 1791198684.0142517
+    }
+  ],
+  "before_hardening": [
+    {
+      "evidence": {
+        "distinct_targets": 5,
+        "window_s": 15.0
+      },
+      "prior_alerts_from_source": 0,
+      "rule": "port_scan_discovery",
+      "score": 75.0,
+      "severity": "HIGH",
+      "src_ip": "127.0.0.30",
+      "summary": "127.0.0.30 touched 5 distinct service(s) in 15s",
+      "technique": {
+        "id": "T0846",
+        "name": "Remote System Discovery",
+        "tactic": "Discovery",
+        "url": "https://attack.mitre.org/techniques/T0846/"
+      },
+      "ts": 1791198683.984776
+    }
+  ]
+}

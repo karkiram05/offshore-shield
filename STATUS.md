@@ -1,9 +1,10 @@
 # Status
 
-_Last updated 2026-09-19: all originally-scoped items below are now
-implemented and tested; see "Deliberate substitutions" for the two
-places the implementation differs honestly from the original plan, and
-why._
+_Last updated 2026-10-05: security pass (lab services bound to loopback,
+non-root container, TrustGraph pinned to a commit), every scenario rerun
+from a clean state, and the raw captures, processed tables and charts
+behind each result added (`data/`, `docs/figures/`). See "Security and
+data changes, 2026-10-05" below._
 
 Honest tracking of what's actually implemented and tested vs. planned.
 Read this before docs/results.md or any scenario output -- it tells you
@@ -55,8 +56,8 @@ still roadmap. Updated as work happens, not written once and left stale.
     intentionally alongside `unexpected_modbus_write` as defense-in-depth
     rather than suppressing the overlap.
 
-  26 passing unit tests. Verified end-to-end against live scenarios (see
-  below).
+  17 passing unit tests for the rules and engine (30 in the whole
+  suite). Verified end-to-end against live scenarios (see below).
 - **OT-aware vulnerability prioritizer** (`vuln/ot_prioritizer.py`) -- a
   real, computed rules engine (not a lookup table) taking CVSS + exposure +
   compensating-control context and producing an operational risk score and
@@ -123,6 +124,38 @@ after which `make demo-discovery`, `make demo-lateral-movement`, or
 own namespaces, needs root/CAP_NET_ADMIN) and `make demo-cicd` is
 standalone (no live lab needed). `make dashboard` regenerates
 `dashboard/index.html` from whatever's currently in `scenarios/results/`.
+
+## Security and data changes, 2026-10-05
+
+- **Lab services no longer listen on every interface.** The turbine and
+  HVAC simulators, the management banner service and the tap defaulted
+  to `0.0.0.0`, so `make lab-up` on a laptop exposed an unauthenticated
+  Modbus server with a writable setpoint register to the local network.
+  All four now default to `127.0.0.1`. The old comment claiming a
+  narrower bind "would defeat the lab" was wrong: every simulated host
+  binds its source to a `127.0.0.x` address but connects to `127.0.0.1`.
+  All five scenarios were rerun on the loopback-only lab and reproduce
+  their numbers. The container sets `LAB_BIND_HOST=0.0.0.0` for the tap
+  only, and compose publishes on host loopback.
+  (`tests/test_lab_hardening.py`)
+- **Container**: runs as a non-root user, drops all capabilities, sets
+  `no-new-privileges`, mounts the Kelmarsh data read-only, and has a
+  `.dockerignore`. The old image could not have built at all: `pip`
+  needs `git` for the `trustgraph @ git+https` requirement and
+  `python:3.11-slim` doesn't include it.
+- **TrustGraph pinned to a commit** instead of `@main`, so a push to that
+  repo can't change what this one installs: the exact risk TrustGraph's
+  own unpinned-action rule flags.
+- **No machine paths in outputs.** `scenarios/results/discovery.json` and
+  the dashboard contained absolute home-directory paths from the build
+  sandbox. Results now record repo-relative paths, and a test fails if an
+  absolute path appears in any committed output.
+- **Evidence kept, not just summaries.** Each live scenario saves its raw
+  tap capture and its alerts; `scripts/build_data.py` builds clean and
+  processed tables from them; `scripts/make_charts.py` draws
+  `docs/figures/`. Doing this surfaced one thing the summaries hid: the
+  process-manipulation run also trips `automated_collection` (see
+  `docs/results.md`).
 
 ## Implemented, not yet wired into a full scenario
 

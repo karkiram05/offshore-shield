@@ -44,6 +44,7 @@ sys.path.insert(0, str(REPO_ROOT))
 from pymodbus.client import ModbusTcpClient  # noqa: E402
 
 from detection.engine import DetectionEngine, load_zones, read_jsonl  # noqa: E402
+from scenarios.artifacts import repo_relative, save_alerts, save_capture  # noqa: E402
 
 SETPOINT_REGISTER = 6  # holding register index 6 == register 40007
 TAP_HOST = "127.0.0.1"
@@ -152,7 +153,9 @@ def main():
         out_path = REPO_ROOT / "scenarios" / "results" / "process_manipulation.json"
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(result, indent=2) + "\n")
-        print(f"\n[scenario] wrote {out_path}")
+        print(f"\n[scenario] wrote {repo_relative(out_path)}")
+        print(f"[scenario] wrote {repo_relative(save_capture('process_manipulation', records))}")
+        print(f"[scenario] wrote {repo_relative(save_alerts('process_manipulation', {'alerts': alerts}))}")
 
 
 if __name__ == "__main__":

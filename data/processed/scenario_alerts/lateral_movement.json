@@ -1,0 +1,24 @@
+{
+  "alerts": [
+    {
+      "evidence": {
+        "dst_zone": "ot-engineering",
+        "pivot_delay_s": 3.03,
+        "service": "engws-mgmt"
+      },
+      "prior_alerts_from_source": 0,
+      "rule": "lateral_movement_pivot",
+      "score": 85.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.20",
+      "summary": "127.0.0.20 was reached as a destination 3.0s ago and has now pivoted onward to ot-engineering zone asset engws-mgmt -- a two-hop pattern, not caught by either hop's own zone check",
+      "technique": {
+        "id": "T0859",
+        "name": "Valid Accounts",
+        "tactic": "Initial Access, Lateral Movement",
+        "url": "https://attack.mitre.org/techniques/T0859/"
+      },
+      "ts": 1791198687.4881315
+    }
+  ]
+}

@@ -110,7 +110,7 @@ def main():
         out_path = REPO_ROOT / "scenarios" / "results" / "cicd_identity.json"
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(result, indent=2) + "\n")
-        print(f"\n[scenario] wrote {out_path}")
+        print(f"\n[scenario] wrote {out_path.relative_to(REPO_ROOT)}")
 
 
 if __name__ == "__main__":

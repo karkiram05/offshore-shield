@@ -1,0 +1,17 @@
+{
+  "source_file": "data/kelmarsh/km_scada_sample_2022_excerpt.csv",
+  "is_full_dataset": false,
+  "rows_in": 20,
+  "rows_clean": 20,
+  "first_timestamp": "2022-01-01 00:00:00",
+  "last_timestamp": "2022-01-01 03:10:00",
+  "checks": {
+    "unparseable_row": 0,
+    "mean_outside_min_max": 0,
+    "negative_std": 0,
+    "non_10_minute_step": 0,
+    "negative_min_power_rows": 0
+  },
+  "power_kw_mean": 933.865,
+  "power_kw_max": 1883.042
+}

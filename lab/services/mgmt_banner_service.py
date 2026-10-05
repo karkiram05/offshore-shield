@@ -47,7 +47,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     # Intentional: needs to be reachable from every simulated lab host
     # (loopback addresses), not just localhost.
-    parser.add_argument("--host", default="0.0.0.0")  # nosec B104
+    # Loopback by default: this is an unauthenticated simulator (the turbine
+    # one has a writable setpoint register), so it must not be reachable
+    # from the LAN. Only the tap talks to it, over 127.0.0.1.
+    parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=5040)
     args = parser.parse_args()
     asyncio.run(main_async(args.host, args.port))

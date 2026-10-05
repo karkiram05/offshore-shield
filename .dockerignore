@@ -1,0 +1,17 @@
+.git
+.github
+.devcontainer
+.venv
+venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.trustgraph
+logs/*.log
+logs/*.out
+.env
+.env.*
+docs
+data/raw
+data/clean
+data/processed

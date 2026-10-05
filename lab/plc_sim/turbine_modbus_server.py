@@ -122,7 +122,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     # Intentional: needs to be reachable from every simulated lab host
     # (loopback addresses or docker-compose containers), not just localhost.
-    parser.add_argument("--host", default="0.0.0.0")  # nosec B104
+    # Loopback by default: this is an unauthenticated simulator (the turbine
+    # one has a writable setpoint register), so it must not be reachable
+    # from the LAN. Only the tap talks to it, over 127.0.0.1.
+    parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=5020, help="Modbus TCP port (5020, not 502, so it runs without root)")
     parser.add_argument("--interval", type=float, default=2.0, help="Seconds between register updates")
     parser.add_argument("--fault-after", type=int, default=None, help="Tick count after which status register flips to fault, for demo purposes")

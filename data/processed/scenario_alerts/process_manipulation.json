@@ -1,0 +1,179 @@
+{
+  "alerts": [
+    {
+      "evidence": {
+        "function_code": 6,
+        "service": "turbine-plc"
+      },
+      "prior_alerts_from_source": 0,
+      "rule": "unexpected_modbus_write",
+      "score": 85.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.10",
+      "summary": "127.0.0.10 sent Modbus function 6 (Write Single Register) to turbine-plc, a read-only point in this lab",
+      "technique": {
+        "id": "T0836",
+        "name": "Modify Parameter",
+        "tactic": "Impair Process Control",
+        "url": "https://attack.mitre.org/techniques/T0836/"
+      },
+      "ts": 1791198689.3476496
+    },
+    {
+      "evidence": {
+        "function_code": 6,
+        "service": "turbine-plc"
+      },
+      "prior_alerts_from_source": 1,
+      "rule": "unexpected_modbus_write",
+      "score": 89.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.10",
+      "summary": "127.0.0.10 sent Modbus function 6 (Write Single Register) to turbine-plc, a read-only point in this lab",
+      "technique": {
+        "id": "T0836",
+        "name": "Modify Parameter",
+        "tactic": "Impair Process Control",
+        "url": "https://attack.mitre.org/techniques/T0836/"
+      },
+      "ts": 1791198689.3476715
+    },
+    {
+      "evidence": {
+        "function_code": 6,
+        "service": "turbine-plc"
+      },
+      "prior_alerts_from_source": 2,
+      "rule": "unexpected_modbus_write",
+      "score": 93.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.10",
+      "summary": "127.0.0.10 sent Modbus function 6 (Write Single Register) to turbine-plc, a read-only point in this lab",
+      "technique": {
+        "id": "T0836",
+        "name": "Modify Parameter",
+        "tactic": "Impair Process Control",
+        "url": "https://attack.mitre.org/techniques/T0836/"
+      },
+      "ts": 1791198689.3476758
+    },
+    {
+      "evidence": {
+        "function_code": 6,
+        "service": "turbine-plc"
+      },
+      "prior_alerts_from_source": 3,
+      "rule": "unexpected_modbus_write",
+      "score": 97.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.10",
+      "summary": "127.0.0.10 sent Modbus function 6 (Write Single Register) to turbine-plc, a read-only point in this lab",
+      "technique": {
+        "id": "T0836",
+        "name": "Modify Parameter",
+        "tactic": "Impair Process Control",
+        "url": "https://attack.mitre.org/techniques/T0836/"
+      },
+      "ts": 1791198689.347679
+    },
+    {
+      "evidence": {
+        "function_code": 6,
+        "service": "turbine-plc"
+      },
+      "prior_alerts_from_source": 4,
+      "rule": "unexpected_modbus_write",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.10",
+      "summary": "127.0.0.10 sent Modbus function 6 (Write Single Register) to turbine-plc, a read-only point in this lab",
+      "technique": {
+        "id": "T0836",
+        "name": "Modify Parameter",
+        "tactic": "Impair Process Control",
+        "url": "https://attack.mitre.org/techniques/T0836/"
+      },
+      "ts": 1791198689.3476818
+    },
+    {
+      "evidence": {
+        "function_code": 6,
+        "service": "turbine-plc"
+      },
+      "prior_alerts_from_source": 5,
+      "rule": "unexpected_modbus_write",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.10",
+      "summary": "127.0.0.10 sent Modbus function 6 (Write Single Register) to turbine-plc, a read-only point in this lab",
+      "technique": {
+        "id": "T0836",
+        "name": "Modify Parameter",
+        "tactic": "Impair Process Control",
+        "url": "https://attack.mitre.org/techniques/T0836/"
+      },
+      "ts": 1791198689.347689
+    },
+    {
+      "evidence": {
+        "function_code": 6,
+        "service": "turbine-plc"
+      },
+      "prior_alerts_from_source": 6,
+      "rule": "unexpected_modbus_write",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.10",
+      "summary": "127.0.0.10 sent Modbus function 6 (Write Single Register) to turbine-plc, a read-only point in this lab",
+      "technique": {
+        "id": "T0836",
+        "name": "Modify Parameter",
+        "tactic": "Impair Process Control",
+        "url": "https://attack.mitre.org/techniques/T0836/"
+      },
+      "ts": 1791198689.3476937
+    },
+    {
+      "evidence": {
+        "request_count": 6,
+        "service": "turbine-plc",
+        "window_s": 10.0
+      },
+      "prior_alerts_from_source": 7,
+      "rule": "automated_collection",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.10",
+      "summary": "127.0.0.10 made 6 requests to turbine-plc in 10s -- faster than this lab's own telemetry feeder polls",
+      "technique": {
+        "id": "T0802",
+        "name": "Automated Collection",
+        "tactic": "Collection",
+        "url": "https://attack.mitre.org/techniques/T0802/"
+      },
+      "ts": 1791198689.3477297
+    },
+    {
+      "evidence": {
+        "delta": 75,
+        "new_value": 100,
+        "prev_value": 25,
+        "register": 6,
+        "service": "turbine-plc"
+      },
+      "prior_alerts_from_source": 8,
+      "rule": "unsafe_setpoint_write",
+      "score": 100.0,
+      "severity": "CRITICAL",
+      "src_ip": "127.0.0.10",
+      "summary": "127.0.0.10 wrote an abrupt 75-point setpoint change (25 -> 100) to turbine-plc register 6 -- real turbine controllers ramp this kind of command gradually; a jump this size risks drivetrain/blade-pitch mechanical stress",
+      "technique": {
+        "id": "T0836",
+        "name": "Modify Parameter",
+        "tactic": "Impair Process Control",
+        "url": "https://attack.mitre.org/techniques/T0836/"
+      },
+      "ts": 1791198689.347751
+    }
+  ]
+}

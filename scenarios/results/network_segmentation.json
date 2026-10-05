@@ -1,5 +1,5 @@
 {
-  "generated_at": 1789812517.9938366,
+  "generated_at": 1791198719.7339516,
   "cases_tested": 20,
   "cases_matching_policy": 20,
   "cases_mismatching_policy": 0,
@@ -8,7 +8,7 @@
   "disallowed_pairs_tested": 14,
   "disallowed_pairs_actually_blocked": 14,
   "enforcement_fully_matches_policy": true,
-  "eval_latency_s": 28.513,
+  "eval_latency_s": 28.6422,
   "cases": [
     {
       "src_zone": "ot-engineering",

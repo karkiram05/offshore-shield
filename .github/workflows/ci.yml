@@ -22,13 +22,24 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-          cache-dependency-path: requirements.txt
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-dev.txt
 
       - name: Run tests
         run: python3 -m pytest tests/ -v
+
+      - name: Rebuild clean/processed data from the committed raw captures
+        run: python3 scripts/build_data.py
+
+      - name: Fail if committed data drifts from a fresh rebuild
+        run: git diff --exit-code -- data/clean data/processed
+
+      - name: Render charts
+        run: python3 scripts/make_charts.py
 
   security:
     runs-on: ubuntu-latest
@@ -46,7 +57,7 @@ jobs:
         run: pip install bandit pip-audit
 
       - name: Bandit (static analysis for common security issues)
-        run: bandit -r detection vuln lab scenarios dashboard -q
+        run: bandit -r detection vuln lab scenarios dashboard scripts -q
 
       - name: pip-audit (known-vulnerable dependency scan)
         # Fails on any advisory with a fix available. A finding with no fix
@@ -60,4 +71,5 @@ jobs:
         # pip-audit in its own repo's CI against its own dependency tree).
         run: |
           grep -v '^trustgraph' requirements.txt | grep -v '@ git+' > /tmp/pypi-requirements.txt
+          grep -v '^-r ' requirements-dev.txt >> /tmp/pypi-requirements.txt
           pip-audit -r /tmp/pypi-requirements.txt

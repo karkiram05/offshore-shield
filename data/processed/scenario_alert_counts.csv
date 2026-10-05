@@ -1,0 +1,8 @@
+scenario,run,rule,severity,alerts
+discovery,after_hardening,cross_zone_violation,CRITICAL,7
+discovery,after_hardening,port_scan_discovery,HIGH,1
+discovery,before_hardening,port_scan_discovery,HIGH,1
+lateral_movement,alerts,lateral_movement_pivot,CRITICAL,1
+process_manipulation,alerts,automated_collection,CRITICAL,1
+process_manipulation,alerts,unexpected_modbus_write,CRITICAL,7
+process_manipulation,alerts,unsafe_setpoint_write,CRITICAL,1

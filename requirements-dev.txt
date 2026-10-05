@@ -1,0 +1,4 @@
+-r requirements.txt
+# Chart rendering for scripts/make_charts.py. Kept out of requirements.txt
+# so it does not ship in the lab container image.
+matplotlib==3.11.2

@@ -1,3 +1,6 @@
 pymodbus==3.7.4
 pytest==9.0.3
-trustgraph @ git+https://github.com/karkiram05/trustgraph.git@main
+# Pinned to a commit, not a branch: a moving `@main` would let any push to
+# trustgraph change what this project installs (the same unpinned-reference
+# risk TrustGraph's own unpinned-action rule flags).
+trustgraph @ git+https://github.com/karkiram05/trustgraph.git@e12869c9191329edac447d5455f2abbebe49eaaf

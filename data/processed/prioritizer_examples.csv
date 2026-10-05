@@ -1,0 +1,3 @@
+example,cvss,zone,internet_exposed,vendor_reachable,exploit_public,safety_impact,availability_impact,operational_risk_score,operational_risk,patch_timing
+"isolated, high CVSS",9.8,scada,0,0,0,low,medium,49.2,MEDIUM,Next approved maintenance window
+"exposed, lower CVSS",6.1,dmz,0,1,1,high,high,71.4,HIGH,Can be patched without a scheduled outage; proceed at next routine cycle

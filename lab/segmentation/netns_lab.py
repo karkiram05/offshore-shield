@@ -164,7 +164,8 @@ def build(nets: list[ZoneNet]) -> None:
         run(["ip", "netns", "exec", ROUTER_NS, "ip", "addr", "add", f"{z.router_ip}/30", "dev", z.veth_router])
         run(["ip", "netns", "exec", ROUTER_NS, "ip", "link", "set", z.veth_router, "up"])
 
-        subprocess.Popen(  # nosec B603 B607 -- "ip" resolved via PATH is intentional, matches the rest of this lab's use of `ip netns exec`
+        # B603/B607: "ip" resolved via PATH is intentional, matches the rest of this lab's use of `ip netns exec`
+        subprocess.Popen(  # nosec B603 B607
             [
                 "ip", "netns", "exec", z.netns,
                 sys.executable, str(Path(__file__).parent / "netns_lab_listener.py"),
@@ -198,7 +199,8 @@ def load_firewall(nets: list[ZoneNet], policy: dict) -> str:
     rules.append("}")
     ruleset = "\n".join(rules) + "\n"
 
-    proc = subprocess.run(  # nosec B603 B607 -- "ip"/"nft" resolved via PATH is intentional, matches the rest of this lab's use of `ip netns exec`
+    # B603/B607: "ip"/"nft" resolved via PATH is intentional, matches the rest of this lab's use of `ip netns exec`
+    proc = subprocess.run(  # nosec B603 B607
         ["ip", "netns", "exec", ROUTER_NS, "nft", "-f", "-"],
         input=ruleset, capture_output=True, text=True,
     )
@@ -213,7 +215,8 @@ def test_connectivity(nets: list[ZoneNet], src_zone: str, dst_zone: str, timeout
     path. Returns True if the connection succeeded."""
     by_zone = {z.zone: z for z in nets}
     src, dst = by_zone[src_zone], by_zone[dst_zone]
-    proc = subprocess.run(  # nosec B603 B607 -- "ip" resolved via PATH is intentional, matches the rest of this lab's use of `ip netns exec`
+    # B603/B607: "ip" resolved via PATH is intentional, matches the rest of this lab's use of `ip netns exec`
+    proc = subprocess.run(  # nosec B603 B607
         [
             "ip", "netns", "exec", src.netns,
             sys.executable, "-c",

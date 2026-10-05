@@ -30,6 +30,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
 from detection.engine import DetectionEngine, load_zones, read_jsonl  # noqa: E402
+from scenarios.artifacts import repo_relative, save_alerts, save_capture  # noqa: E402
 
 
 def run_pivot(conn_log: Path) -> tuple[list[dict], float]:
@@ -122,7 +123,9 @@ def main():
         out_path = REPO_ROOT / "scenarios" / "results" / "lateral_movement.json"
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(result, indent=2) + "\n")
-        print(f"\n[scenario] wrote {out_path}")
+        print(f"\n[scenario] wrote {repo_relative(out_path)}")
+        print(f"[scenario] wrote {repo_relative(save_capture('lateral_movement', records))}")
+        print(f"[scenario] wrote {repo_relative(save_alerts('lateral_movement', {'alerts': alerts}))}")
 
 
 if __name__ == "__main__":

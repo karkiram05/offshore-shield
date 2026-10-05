@@ -8,6 +8,10 @@ services:
       - "127.0.0.1:6521:6521"
     volumes:
       - ./logs:/app/logs
-      - ./data:/app/data
+      - ./data/kelmarsh:/app/data/kelmarsh:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     stdin_open: true
     tty: true
