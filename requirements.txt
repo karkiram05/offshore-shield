@@ -1,4 +1,4 @@
-pymodbus==3.7.4
+pymodbus==3.16.2
 pytest==9.0.3
 # Pinned to a commit, not a branch: a moving `@main` would let any push to
 # trustgraph change what this project installs (the same unpinned-reference
